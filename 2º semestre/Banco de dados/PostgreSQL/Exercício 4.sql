@@ -1,0 +1,3 @@
+ALTER TABLE cliente ADD COLUMN email VARCHAR(30);
+
+SELECT * FROM cliente
