@@ -1,0 +1,100 @@
+package dao;
+
+import conexao.Conexao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import model.Usuario;
+
+/**
+ *
+ * @author giuli
+ */
+public class DaoUsuario {
+    Connection con = null;
+PreparedStatement pstm = null;
+
+public List<Usuario> getUsuarios()
+{
+    List<Usuario> lista = new ArrayList<Usuario>();
+    ResultSet rs = null;
+    con = new Conexao().getConexao();
+    
+    try{
+    pstm = con.prepareStatement("SELECT * FROM tb_Usuario");
+    rs =  this.pstm.executeQuery();
+    if(rs.first())
+    {
+        do{
+            Usuario u = new Usuario();
+             u.id = rs.getInt("id");
+             u.nome = rs.getString("nome");
+             u.email = rs.getString("email");
+             u.senha = rs.getString("senha");
+             
+             lista.add(u);
+            
+        }while(rs.next());
+    }
+    
+    pstm.close();
+    }
+    catch(SQLException erro)
+    {
+        JOptionPane.showMessageDialog(null, "Erro ao buscar dados no BD "+erro);
+    }
+    finally{
+        try{
+        con.close();
+        }
+        catch(SQLException err)
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao fechar a conexão de busca "+err);
+        }
+    }
+    
+    return lista;
+}
+
+public boolean validarLogin(String n, String s)
+{
+    boolean resp = false;
+    ResultSet rs = null;
+    con = new Conexao().getConexao();
+    
+    try{
+    pstm = con.prepareStatement("SELECT * FROM tb_Usuario WHERE nome = ? AND senha = ?");
+    pstm.setString(1, n);
+    pstm.setString(2, s);
+    rs =  this.pstm.executeQuery();
+    
+    if(rs.first())
+    {
+        resp = true;
+    }
+    
+    pstm.close();
+    }
+    catch(SQLException erro)
+    {
+        JOptionPane.showMessageDialog(null, "Erro ao buscar dados no BD "+erro);
+    }
+    finally{
+        try{
+        con.close();
+        }
+        catch(SQLException err)
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao fechar a conexão de busca "+err);
+        }
+    }
+    
+    return resp;
+}
+    
+    
+}
