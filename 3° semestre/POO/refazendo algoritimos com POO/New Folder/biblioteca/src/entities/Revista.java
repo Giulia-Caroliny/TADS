@@ -32,8 +32,12 @@ public class Revista extends ItemBiblioteca {
     @Override
     public void exibir() {
         System.out.println("Revista: "
+                + super.getTitulo()
+                + "\nEditora: "
+                + super.getEditora()
+                + "\nManchete: "                
                 + mancheteCapa
-                + "/nMês/ano:"
+                + "\nMês/ano: "
                 + mesAno);
     }
 }
