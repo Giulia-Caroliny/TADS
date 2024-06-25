@@ -60,4 +60,13 @@ public class Biblioteca {
         }
         return false;
     }
+
+    public void atualizarItem(String titulo, ItemBiblioteca itemAtualizado) {
+        for (ItemBiblioteca item : itens) {
+            if (item.getTitulo().equals(titulo)) {
+                itens.remove(item);
+                itens.add(itemAtualizado);
+            }
+        }
+    }
 }
